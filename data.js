@@ -1,6 +1,6 @@
 
 
-export const QUESTIONS = {
+module.exports.QUESTIONS = {
     "Number & Algebra": [
         { definition: "Numbers whose absolute values are whole numbers. They consist of positive integers and their corresponding negative counterparts which are called additive inverses.", answer: "INTEGERS" },
         { definition: "Numbers which can be written as a fraction a/b, where a and b are both whole numbers and b is not equal to zero.", answer: "RATIONAL NUMBER" },
