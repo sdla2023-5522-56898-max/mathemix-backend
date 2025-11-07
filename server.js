@@ -12,7 +12,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "https://mathemix-9c8ba.web.app", // Your React app's URL
+        origin: "https://mathemix-9c8ba.web.app", // <--- THIS IS THE CORRECT URL
         methods: ["GET", "POST"],
     },
 });
