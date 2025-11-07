@@ -9,6 +9,11 @@ const { QUESTIONS } = require("./data.js");
 const app = express();
 app.use(cors());
 
+// Add a simple "health check" route
+app.get("/", (req, res) => {
+    res.send("Mathemix server is running!");
+});
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
