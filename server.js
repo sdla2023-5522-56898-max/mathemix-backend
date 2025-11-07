@@ -1,9 +1,9 @@
-// mathemix-server/server.js
-
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
+
+// This line imports the questions. Make sure data.js is in the same folder.
 const { QUESTIONS } = require("./data.js");
 
 const app = express();
@@ -25,7 +25,7 @@ const getRandomQuestion = (category) => {
     return questions[Math.floor(Math.random() * questions.length)];
 };
 
-// NEW: Helper function to generate a unique room code
+// Helper function to generate a unique room code
 const generateRoomCode = () => {
     let code;
     do {
@@ -37,7 +37,7 @@ const generateRoomCode = () => {
 io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
 
-    // NEW: Host creates a room
+    // Host creates a room
     socket.on("createRoom", ({ nickname }) => {
         const roomCode = generateRoomCode();
         socket.join(roomCode);
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
         console.log(`${nickname} created room ${roomCode}`);
     });
 
-    // MODIFIED: Joiner joins an existing room
+    // Joiner joins an existing room
     socket.on("joinRoom", ({ roomCode, nickname }) => {
         const code = roomCode.toUpperCase();
 
@@ -81,9 +81,8 @@ io.on("connection", (socket) => {
         console.log(`${nickname} joined ${code}`);
     });
 
-    // Host starts the game (no changes here)
+    // Host starts the game
     socket.on("startGame", ({ roomCode, category }) => {
-        // ... (rest of your existing startGame logic)
         const room = rooms[roomCode];
         if (!room || socket.id !== room.host) return;
 
@@ -103,11 +102,8 @@ io.on("connection", (socket) => {
         io.to(roomCode).emit("updateLeaderboard", room.players);
     });
 
-    // ... (rest of your 'nextRound', 'submitAnswer', and 'disconnect' logic remains exactly the same)
-
     // Host requests the next round
     socket.on("nextRound", ({ roomCode }) => {
-        // ... (same as before)
         const room = rooms[roomCode];
         if (!room || socket.id !== room.host) return;
 
@@ -126,7 +122,6 @@ io.on("connection", (socket) => {
 
     // Player submits an answer
     socket.on("submitAnswer", ({ roomCode, answer }) => {
-        // ... (same as before)
         const room = rooms[roomCode];
         if (!room || !room.currentQuestion || room.answeredPlayers.includes(socket.id)) return;
 
@@ -153,7 +148,6 @@ io.on("connection", (socket) => {
 
     // Handle player disconnect
     socket.on("disconnect", () => {
-        // ... (same as before)
         console.log("User disconnected:", socket.id);
         for (const roomCode in rooms) {
             const room = rooms[roomCode];
@@ -173,7 +167,7 @@ io.on("connection", (socket) => {
     });
 });
 
-// Port configuration (no changes)
+// Port configuration
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
     console.log(`WebSocket server listening on port ${PORT}`);
